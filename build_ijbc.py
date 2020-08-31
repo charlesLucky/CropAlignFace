@@ -46,7 +46,7 @@ def alignface(img1, ):
         return face1, True
     except:
         logging.info(f'fail !! {img1}')
-        face1 = to_image(img1).resize((112, 112), Image.BILINEAR)
+        face1 = cv2.resize(img1, (112, 112),)
         face1 = np.asarray(face1)
         return face1, False
 
@@ -80,7 +80,6 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
 
     for frame_id, frame_data in frames_data.items():
         print(frame_id)
-        print(frame_data)
         x, y, w, h = frame_data
 
         try:
