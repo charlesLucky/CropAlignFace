@@ -78,9 +78,10 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
     # save_path = '/media/Storage/facedata/ijbc/images_cropped/'
 
     frames_data = get_groundtruth(metadata_path)
-
+    nn = 0
     for frame_id, frame_data in frames_data.items():
-        print(frame_id)
+        print(frame_id,nn)
+        nn = nn +1
         x, y, w, h = frame_data
 
         try:
