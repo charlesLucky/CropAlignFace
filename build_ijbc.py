@@ -80,6 +80,7 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
 
     for frame_id, frame_data in frames_data.items():
         print(frame_id)
+        print(frame_data)
         x, y, w, h = frame_data
 
         try:
