@@ -52,7 +52,7 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
     frames_data = get_groundtruth(metadata_path)
     nn = 0
     for frame_id, frame_data in frames_data.items():
-        print(frame_id,nn)
+        print(frame_id,nn/640000)
         nn = nn +1
         x, y, w, h = frame_data
         try:
