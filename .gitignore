@@ -1,0 +1,12 @@
+.vscode/*
+checkpoints/*
+logs/*
+**/__pycache__/*
+**/*.tfrecord
+.idea
+.embeddings
+.embeddings/*
+.trash
+data/*
+matlab/BLUFR/data/*
+matlab/data/*
