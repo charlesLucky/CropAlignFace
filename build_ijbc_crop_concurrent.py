@@ -17,13 +17,15 @@ import numpy as np
 from PIL import Image
 np.random.seed(123)  # for reproducibility
 import concurrent.futures
-
-root_path = '/media/Storage/facedata/ijbc/'
-# root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
+import os
+# root_path = '/media/Storage/facedata/ijbc/'
+root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
 metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
+# metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
+# metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
 save_path = root_path + 'images_cropped/'
-
+nn =0
 def to_image(arr):
     if type(arr).__module__ == 'PIL.Image':
         return arr
@@ -45,15 +47,17 @@ def get_groundtruth(dataset):
             # if 'frames' in frame_name:
             if frame_name not in frame_map:
                 frame_map[frame_name] = []
-            frame_data = [x, y, w, h]
+            frame_data = [x, y, w, h,subject_id]
             frame_map[frame_name] = frame_data
 
     return frame_map
-
+def create_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 def process_crop(input):
     (frame_id, frame_data) = input
     print(frame_id)
-    x, y, w, h = frame_data
+    x, y, w, h,subject_id = frame_data
     try:
         draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
         y = int(y)
@@ -62,8 +66,8 @@ def process_crop(input):
         h = int(h)
 
         face = draw[y:y + h, x:x + w]
-
-        cv2.imwrite(save_path + frame_id, face)
+        create_dir(save_path + subject_id+'/')
+        cv2.imwrite(save_path + subject_id+'/'+frame_id.split('/')[-1], face)
     except Exception as e:
         print(e)
 
@@ -76,6 +80,7 @@ def process_ijbc_frames():
     with concurrent.futures.ProcessPoolExecutor() as executor:
         frames_data = get_groundtruth(metadata_path)
         executor.map(process_crop, frames_data.items())
+
 
     print("SUCCESS!!!!!")
 
