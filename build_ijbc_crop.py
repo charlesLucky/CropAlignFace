@@ -74,8 +74,8 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
     print("SUCCESS!!!!!")
 
 def main(_):
-    # root_path = '/media/Storage/facedata/ijbc/'
-    root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
+    root_path = '/media/Storage/facedata/ijbc/'
+    # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
     path_to_frames = root_path + 'images/'
     metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
     save_path = root_path + 'images_cropped/'
