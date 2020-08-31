@@ -46,7 +46,7 @@ def alignface(img1, ):
         return face1, True
     except:
         logging.info(f'fail !! {img1}')
-        face1 = cv2.resize(img1, (112, 112),)
+        face1 = cv2.resize(img1, (112, 112))
         face1 = np.asarray(face1)
         return face1, False
 
