@@ -14,10 +14,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 from absl import app, flags, logging
 import cv2
 import numpy as np
-from PIL import Image
 np.random.seed(123)  # for reproducibility
 import concurrent.futures
 import os
+from PIL import Image
+from os import listdir
+from os.path import splitext
+from glob import glob
+
 root_path = '/media/Storage/facedata/ijbc/'
 # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
@@ -80,13 +84,33 @@ def process_ijbc_frames():
     with concurrent.futures.ProcessPoolExecutor() as executor:
         frames_data = get_groundtruth(metadata_path)
         executor.map(process_crop, frames_data.items())
-
-
     print("SUCCESS!!!!!")
+
+
+def convert2png():
+    target_directory = save_path + "*/*"
+    target = '.png'
+    nn = 0
+    imgs = glob(target_directory)
+    for j in imgs:
+        filename, extension = splitext(j)
+        if extension not in ['.py', target]:
+            nn = nn +1
+            im = Image.open(filename + extension)
+            print(filename + target)
+            os.remove(filename + extension)
+            im.save(filename + target)
+            # img = cv2.imread(j)
+            # cv2.imwrite(j[:-3] + 'jpg', img)
+
+    print("total " + str(nn))
+
+
 
 def main(_):
 
-    process_ijbc_frames()
+    # process_ijbc_frames()
+    convert2png()
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
     # process_ijbc_frames(path_to_frames,metadata_path,save_path)
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
