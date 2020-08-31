@@ -67,7 +67,7 @@ def process_crop(input):
 
         face = draw[y:y + h, x:x + w]
         create_dir(save_path + subject_id+'/')
-        cv2.imwrite(save_path + subject_id+'/'+frame_id.split('/')[-1], face)
+        cv2.imwrite(save_path + subject_id+'/'+frame_id.split('/')[-2]+frame_id.split('/')[-1], face)
     except Exception as e:
         print(e)
 
