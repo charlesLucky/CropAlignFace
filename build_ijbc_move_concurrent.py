@@ -21,8 +21,7 @@ from PIL import Image
 from os import listdir
 from os.path import splitext
 from glob import glob
-# root_path = '/media/Storage/facedata/ijbc_mtcnn_160/'
-root_path = '/media/Storage/facedata/ijbc/'
+root_path = '/media/Storage/facedata/ijbc_mtcnn_160/'
 # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
 metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
@@ -110,8 +109,7 @@ def convert2png():
 
 def main(_):
 
-    # process_ijbc_frames()
-    convert2png()
+    process_ijbc_frames()
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
     # process_ijbc_frames(path_to_frames,metadata_path,save_path)
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
