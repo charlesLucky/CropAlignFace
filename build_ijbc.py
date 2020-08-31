@@ -16,9 +16,10 @@ import cv2
 import numpy as np
 from PIL import Image
 np.random.seed(123)  # for reproducibility
+from util import  *
+setUpGPU()
 from mtcnn.mtcnn import MTCNN
 detector = MTCNN()
-import tqdm
 
 def to_image(arr):
     if type(arr).__module__ == 'PIL.Image':
@@ -83,10 +84,8 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
         print(frame_id,nn)
         nn = nn +1
         x, y, w, h = frame_data
-
         try:
             draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
-
         except Exception as e:
             print(e)
             continue
