@@ -25,10 +25,11 @@ from glob import glob
 root_path = '/media/Storage/facedata/ijbc/'
 # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
-metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
-# metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
+# metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
+metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
 # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
-save_path = root_path + 'images_cropped/'
+# save_path = root_path + 'images_cropped/'
+save_path = root_path + 'images_cropped_G1/'
 nn =0
 def to_image(arr):
     if type(arr).__module__ == 'PIL.Image':
@@ -71,7 +72,7 @@ def process_crop(input):
 
         face = draw[y:y + h, x:x + w]
         create_dir(save_path + subject_id+'/')
-        cv2.imwrite(save_path + subject_id+'/'+frame_id.split('/')[-2]+frame_id.split('/')[-1], face)
+        cv2.imwrite(save_path + subject_id+'/'+frame_id.split('/')[-2]+frame_id.split('/')[-1].split('.')[0]+'.png', face)
     except Exception as e:
         print(e)
 
@@ -109,8 +110,7 @@ def convert2png():
 
 def main(_):
 
-    # process_ijbc_frames()
-    convert2png()
+    process_ijbc_frames()
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
     # process_ijbc_frames(path_to_frames,metadata_path,save_path)
     # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
