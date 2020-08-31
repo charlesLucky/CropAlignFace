@@ -18,8 +18,8 @@ from PIL import Image
 np.random.seed(123)  # for reproducibility
 import concurrent.futures
 import os
-# root_path = '/media/Storage/facedata/ijbc/'
-root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
+root_path = '/media/Storage/facedata/ijbc/'
+# root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
 metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
 # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
