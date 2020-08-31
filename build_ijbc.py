@@ -27,7 +27,7 @@ def to_image(arr):
         return Image.fromarray(arr)
 
 def alignface(img1, ):
-    img1 = Image.fromarray(img1)
+    # img1 = Image.fromarray(img1)
     try:
         face = detector.detect_faces(img1)
         # [{'box': [57, 71, 79, 97],
@@ -43,6 +43,7 @@ def alignface(img1, ):
         # Result is an array with all the bounding boxes detected. We know that for 'ivan.jpg' there is only one.
         face1 = img1[int(bounding_box[1]):int(bounding_box[1]) + int(bounding_box[3]),
                    int(bounding_box[0]):int(bounding_box[0]) + int(bounding_box[2])]
+        face1 = cv2.resize(img1, (112, 112))
         return face1, True
     except:
         logging.info(f'fail !! {img1}')
@@ -95,19 +96,22 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
         h = int(h)
 
         face = draw[y:y + h, x:x + w]
+
         alignface_img,isSuccess = alignface(face)
         cv2.imwrite(save_path+frame_id, alignface_img)
 
     print("SUCCESS!!!!!")
 
 def main(_):
-    path_to_frames = '/media/Storage/facedata/ijbc/images/'
-    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_probe_mixed.csv'
-    save_path = '/media/Storage/facedata/ijbc/images_cropped/'
+    root_path = '/media/Storage/facedata/ijbc/'
+    # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
+    path_to_frames = root_path + 'images/'
+    metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
+    save_path = root_path + 'images_cropped/'
     process_ijbc_frames(path_to_frames,metadata_path,save_path)
-    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_gallery_G1.csv'
+    metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
     process_ijbc_frames(path_to_frames,metadata_path,save_path)
-    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_gallery_G2.csv'
+    metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
     process_ijbc_frames(path_to_frames,metadata_path,save_path)
 
 
