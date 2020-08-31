@@ -18,8 +18,7 @@ from PIL import Image
 np.random.seed(123)  # for reproducibility
 from mtcnn.mtcnn import MTCNN
 detector = MTCNN()
-from multiprocessing import Pool
-
+import concurrent.futures
 # root_path = '/media/Storage/facedata/ijbc/'
 root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
@@ -80,7 +79,6 @@ def get_groundtruth(dataset):
 def process_crop(input):
     (frame_id, frame_data) = input
     print(frame_id)
-    print(frame_data)
     x, y, w, h = frame_data
     try:
         draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
@@ -95,7 +93,7 @@ def process_crop(input):
 
     except Exception as e:
         print("sth err:",e)
-        return
+        return 
 
 
 def process_ijbc_frames():
@@ -103,13 +101,10 @@ def process_ijbc_frames():
     # path_to_frames = '/media/Storage/facedata/ijbc/images/'
     # metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_probe_mixed.csv'
     # save_path = '/media/Storage/facedata/ijbc/images_cropped/'
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        frames_data = get_groundtruth(metadata_path)
+        executor.map(process_crop, frames_data.items())
 
-    frames_data = get_groundtruth(metadata_path)
-    pool_size = 2
-    pool = Pool(pool_size)  # 创建一个线程池
-    pool.map(process_crop, frames_data.items())  # 往线程池中填线程
-    pool.close()  # 关闭线程池，不再接受线程
-    pool.join()  # 等待线程池中线程全部执行完
     print("SUCCESS!!!!!")
 
 def main(_):
