@@ -18,6 +18,13 @@ from PIL import Image
 np.random.seed(123)  # for reproducibility
 from mtcnn.mtcnn import MTCNN
 detector = MTCNN()
+from multiprocessing import Pool
+
+# root_path = '/media/Storage/facedata/ijbc/'
+root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
+path_to_frames = root_path + 'images/'
+metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
+save_path = root_path + 'images_cropped/'
 
 def to_image(arr):
     if type(arr).__module__ == 'PIL.Image':
@@ -70,47 +77,45 @@ def get_groundtruth(dataset):
 
     return frame_map
 
-def process_ijbc_frames(path_to_frames,metadata_path,save_path):
+def process_crop(input):
+    (frame_id, frame_data) = input
+    print(frame_id)
+    x, y, w, h = frame_data
+    try:
+        draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
+    except Exception as e:
+        print(e)
+    y = int(y)
+    x = int(x)
+    w = int(w)
+    h = int(h)
+    face = draw[y:y + h, x:x + w]
+    alignface_img, isSuccess = alignface(face)
+    cv2.imwrite(save_path + frame_id, alignface_img)
+
+def process_ijbc_frames():
 
     # path_to_frames = '/media/Storage/facedata/ijbc/images/'
     # metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_probe_mixed.csv'
     # save_path = '/media/Storage/facedata/ijbc/images_cropped/'
 
     frames_data = get_groundtruth(metadata_path)
-    nn = 0
-    for frame_id, frame_data in frames_data.items():
-        print(frame_id,nn)
-        nn = nn +1
-        x, y, w, h = frame_data
-        try:
-            draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
-        except Exception as e:
-            print(e)
-            continue
+    pool_size = 10
+    pool = Pool(pool_size)  # 创建一个线程池
+    pool.map(process_crop, frames_data.items())  # 往线程池中填线程
+    pool.close()  # 关闭线程池，不再接受线程
+    pool.join()  # 等待线程池中线程全部执行完
 
-        y = int(y)
-        x = int(x)
-        w = int(w)
-        h = int(h)
-
-        face = draw[y:y + h, x:x + w]
-
-        alignface_img,isSuccess = alignface(face)
-        cv2.imwrite(save_path+frame_id, alignface_img)
 
     print("SUCCESS!!!!!")
 
 def main(_):
-    root_path = '/media/Storage/facedata/ijbc/'
-    # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
-    path_to_frames = root_path + 'images/'
-    metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
-    save_path = root_path + 'images_cropped/'
-    process_ijbc_frames(path_to_frames,metadata_path,save_path)
-    metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
-    process_ijbc_frames(path_to_frames,metadata_path,save_path)
-    metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
-    process_ijbc_frames(path_to_frames,metadata_path,save_path)
+
+    process_ijbc_frames()
+    # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
+    # process_ijbc_frames(path_to_frames,metadata_path,save_path)
+    # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
+    # process_ijbc_frames(path_to_frames,metadata_path,save_path)
 
 
 if __name__ == '__main__':
