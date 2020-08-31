@@ -1,0 +1,10 @@
+name: mtcnn-tf2
+channels:
+  - conda-forge
+
+dependencies:
+  - python==3.7
+  - pip
+  - pip:
+    - tensorflow
+    - opencv-python==4.1.1.26
