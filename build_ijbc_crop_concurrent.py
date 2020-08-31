@@ -21,15 +21,14 @@ from PIL import Image
 from os import listdir
 from os.path import splitext
 from glob import glob
-
-root_path = '/media/Storage/facedata/ijbc/'
+root_path = '/media/Storage/facedata/ijbc_mtcnn_160/'
 # root_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/'
 path_to_frames = root_path + 'images/'
-# metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
+metadata_path = root_path + 'protocols/ijbc_1N_probe_mixed.csv'
 # metadata_path = root_path + 'protocols/ijbc_1N_gallery_G1.csv'
-metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
-# save_path = root_path + 'images_cropped/'
-save_path = root_path + 'images_cropped_G2/'
+# metadata_path = root_path + 'protocols/ijbc_1N_gallery_G2.csv'
+save_path = root_path + 'images_cropped/'
+# save_path = root_path + 'images_cropped_G2/'
 nn =0
 def to_image(arr):
     if type(arr).__module__ == 'PIL.Image':
