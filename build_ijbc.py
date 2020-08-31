@@ -83,7 +83,8 @@ def process_ijbc_frames(path_to_frames,metadata_path,save_path):
         x, y, w, h = frame_data
 
         try:
-            draw = cv2.imread(path_to_frames + frame_id)
+            draw = cv2.cvtColor(cv2.imread(path_to_frames + frame_id), cv2.COLOR_BGR2RGB)
+
         except Exception as e:
             print(e)
             continue
