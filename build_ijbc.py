@@ -70,11 +70,11 @@ def get_groundtruth(dataset):
 
     return frame_map
 
-def process_ijbc_frames():
+def process_ijbc_frames(path_to_frames,metadata_path,save_path):
 
-    path_to_frames = '/media/charles/Storage/CropAlignFace/data/IJB-C/images/'
-    metadata_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/protocols/ijbc_1N_probe_mixed.csv'
-    save_path = '/media/charles/Storage/CropAlignFace/data/IJB-C/images_cropped/'
+    # path_to_frames = '/media/Storage/facedata/ijbc/images/'
+    # metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_probe_mixed.csv'
+    # save_path = '/media/Storage/facedata/ijbc/images_cropped/'
 
     frames_data = get_groundtruth(metadata_path)
 
@@ -99,6 +99,16 @@ def process_ijbc_frames():
 
     print("SUCCESS!!!!!")
 
+def main(_):
+    path_to_frames = '/media/Storage/facedata/ijbc/images/'
+    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_probe_mixed.csv'
+    save_path = '/media/Storage/facedata/ijbc/images_cropped/'
+    process_ijbc_frames(path_to_frames,metadata_path,save_path)
+    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_gallery_G1.csv'
+    process_ijbc_frames(path_to_frames,metadata_path,save_path)
+    metadata_path = '/media/Storage/facedata/ijbc/protocols/ijbc_1N_gallery_G2.csv'
+    process_ijbc_frames(path_to_frames,metadata_path,save_path)
+
 
 if __name__ == '__main__':
-    app.run(process_ijbc_frames())
+    app.run(main)
